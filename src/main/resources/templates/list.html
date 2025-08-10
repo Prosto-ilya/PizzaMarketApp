@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню пицц</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .pizza-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .pizza-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <h1 class="mb-4">Меню пицц</h1>
+
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="pizza : ${pizzas}">
+            <div class="pizza-card">
+                <div th:if="${#lists.isEmpty(pizza.images) == false}">
+                    <img th:src="@{'/images/' + ${pizza.images[0].id}}" class="pizza-image" alt="Фото пиццы">
+                </div>
+                <div th:if="${#lists.isEmpty(pizza.images)}">
+                    <div class="pizza-image" style="background-color: #eee; height: 200px; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: #999;">Нет изображения</span>
+                    </div>
+                </div>
+
+                <h5 th:text="${pizza.pizzaName}">Название</h5>
+                <p th:text="${pizza.pizzaDescription}">Описание</p>
+                <p><strong>Цена:</strong> <span th:text="${pizza.price}">0.00</span> BYN</p>
+                <p><strong>Доступна:</strong> <span th:text="${pizza.available ? 'Да' : 'Нет'}"></span></p>
+                <a th:href="@{'/pizza/' + ${pizza.id}}" class="btn btn-primary mt-2">Подробнее</a>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/pizza/add}" class="btn btn-success mt-4">Добавить пиццу</a>
+</div>
+</body>
+</html>
+
+
+

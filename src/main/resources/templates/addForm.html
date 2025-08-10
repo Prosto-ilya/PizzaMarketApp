@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пиццу</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-5">
+    <h1 class="mb-4">Добавить новую пиццу</h1>
+
+    <form th:action="@{/pizza/add}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="pizzaName" class="form-label">Название</label>
+            <input type="text" class="form-control" id="pizzaName" name="pizzaName" th:value="${pizza.pizzaName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="pizzaDescription" class="form-label">Описание</label>
+            <textarea class="form-control" id="pizzaDescription" name="pizzaDescription" rows="3" th:text="${pizza.pizzaDescription}" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Цена</label>
+            <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" th:value="${pizza.price}" required>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Изображение</label>
+            <input type="file" class="form-control" id="file" name="file" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a th:href="@{/pizza}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>
+
+
