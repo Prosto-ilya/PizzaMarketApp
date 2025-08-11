@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Заказ оформлен</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body class="p-4">
+
+<h1>Спасибо за заказ!</h1>
+
+<p>Ваш заказ № <span th:text="${order.id}">123</span> успешно оформлен.</p>
+<p>Имя клиента: <span th:text="${order.customerName}"/></p>
+<p>Сумма заказа: <span th:text="${order.totalPrice}"/> ₽</p>
+
+<a th:href="@{/pizza}" class="btn btn-primary">Вернуться к пиццам</a>
+<a th:href="@{/order/{id}(id=${order.id})}" class="btn btn-secondary">Просмотр заказа</a>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Создание заказа</title>
+</head>
+<body>
+<h1>Оформить заказ</h1>
+
+<form th:action="@{/order/create}" method="post">
+    <label>Имя:</label>
+    <input type="text" name="customerName" required/><br/>
+
+    <label>Телефон:</label>
+    <input type="text" name="phoneNumber" required/><br/>
+
+    <label>Адрес доставки:</label>
+    <input type="text" name="deliveryAddress" required/><br/>
+
+    <h3>Выберите пиццы:</h3>
+    <div th:each="pizza : ${pizzas}">
+        <span th:text="${pizza.pizzaName}">Пицца</span> —
+        <span th:text="${pizza.price}">Цена</span>
+        <label>Количество:</label>
+        <input type="number" min="0" th:name="${'pizza_' + pizza.id}" value="0"/><br/>
+    </div>
+
+    <button type="submit">Оформить заказ</button>
+</form>
+</body>
+</html>

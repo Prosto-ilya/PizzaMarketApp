@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Детали заказа</title>
+</head>
+<body>
+<h1>Заказ №<span th:text="${order.id}"/></h1>
+
+<p>Имя: <span th:text="${order.customerName}"/></p>
+<p>Телефон: <span th:text="${order.phoneNumber}"/></p>
+<p>Адрес: <span th:text="${order.deliveryAddress}"/></p>
+<p>Время: <span th:text="${order.orderTime}"/></p>
+<p>Сумма: <strong th:text="${order.totalPrice}"/> BYN</p>
+
+<h3>Позиции:</h3>
+<ul>
+    <li th:each="item : ${order.items}">
+        <span th:text="${item.pizza.pizzaName}"/> —
+        <span th:text="${item.quantity}"/> шт —
+        <span th:text="${item.itemPrice}"/> BYN
+    </li>
+</ul>
+
+<a th:href="@{/order}">Назад к списку заказов</a>
+</body>
+</html>
+
+

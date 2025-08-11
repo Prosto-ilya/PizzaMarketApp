@@ -4,25 +4,23 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@Entity
-@Table(name = "user")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 
+
+@Entity
+@Table(name = "users")
+@Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "firstName")
-    private String firstName;
-    @Column(name = "lastName")
-    private String lastName;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
-    @Column(name = "password")
-    private String password_hashed;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    private boolean enabled = true;
+
+
 }

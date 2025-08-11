@@ -6,31 +6,48 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container py-5">
-    <h1 class="mb-4">Добавить новую пиццу</h1>
+<div class="container mt-4">
+    <h1>Добавить новую пиццу</h1>
 
-    <form th:action="@{/pizza/add}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/pizza/add}" th:object="${pizza}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
-            <label for="pizzaName" class="form-label">Название</label>
-            <input type="text" class="form-control" id="pizzaName" name="pizzaName" th:value="${pizza.pizzaName}" required>
+            <label for="pizzaName" class="form-label">Название пиццы</label>
+            <input type="text" class="form-control" id="pizzaName"
+                   th:field="*{pizzaName}" required>
         </div>
+
         <div class="mb-3">
             <label for="pizzaDescription" class="form-label">Описание</label>
-            <textarea class="form-control" id="pizzaDescription" name="pizzaDescription" rows="3" th:text="${pizza.pizzaDescription}" required></textarea>
+            <textarea class="form-control" id="pizzaDescription"
+                      th:field="*{pizzaDescription}" rows="3" required></textarea>
         </div>
+
         <div class="mb-3">
             <label for="price" class="form-label">Цена</label>
-            <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" th:value="${pizza.price}" required>
+            <input type="number" step="0.01" class="form-control" id="price"
+                   th:field="*{price}" min="0" required>
         </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="available"
+                   th:field="*{available}">
+            <label class="form-check-label" for="available">Доступна для заказа</label>
+        </div>
+
         <div class="mb-3">
-            <label for="file" class="form-label">Изображение</label>
-            <input type="file" class="form-control" id="file" name="file" accept="image/*">
+            <label for="file" class="form-label">Изображение пиццы</label>
+            <input type="file" class="form-control" id="file" name="file"
+                   accept="image/*" required>
+            <div class="form-text">Поддерживаются форматы: JPG, PNG, JPEG</div>
         </div>
-        <button type="submit" class="btn btn-success">Сохранить</button>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
         <a th:href="@{/pizza}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
 </body>
 </html>
+
+
 
 

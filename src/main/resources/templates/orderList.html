@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список заказов</title>
+</head>
+<body>
+<h1>Список заказов</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Телефон</th>
+        <th>Адрес</th>
+        <th>Сумма</th>
+        <th>Детали</th>
+    </tr>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"/>
+        <td th:text="${order.customerName}"/>
+        <td th:text="${order.phoneNumber}"/>
+        <td th:text="${order.deliveryAddress}"/>
+        <td th:text="${order.totalPrice}"/>
+        <td><a th:href="@{/order/{id}(id=${order.id})}">Открыть</a></td>
+    </tr>
+</table>
+
+<a th:href="@{/order/create}">Создать новый заказ</a>
+</body>
+</html>

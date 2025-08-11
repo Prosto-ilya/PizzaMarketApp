@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class Pizza {
     @Column(name = "pizza_description", length = 1000)
     private String pizzaDescription;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
     @Column(name = "is_available")
     private boolean available = true;
