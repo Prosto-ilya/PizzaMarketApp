@@ -1,11 +1,8 @@
 package org.example.pizzamarket.model;
 
-
-
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,21 +21,21 @@ public class Order {
     private String phoneNumber;
     private String deliveryAddress;
     private LocalDateTime orderTime;
-    private BigDecimal totalPrice;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
+    @ManyToOne
+    private PromoCode promoCode;
+
+    // Метод для добавления позиции
     public void addItem(OrderItem item) {
+        if (item == null) return;
+
         item.setOrder(this);
         items.add(item);
-        recalculateTotalPrice();
-    }
-
-    public void recalculateTotalPrice() {
-        this.totalPrice = items.stream()
-                .map(OrderItem::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        totalPrice = totalPrice.add(item.getTotalPrice());
     }
 }
 

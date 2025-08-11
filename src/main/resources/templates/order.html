@@ -1,27 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Оформить заказ</title>
+    <meta charset="UTF-8">
+    <title>Оформление заказа: <span th:text="${pizza.pizzaName}"/></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .order-card {
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .pizza-image {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn-order {
+            background-color: #ff6b6b;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+        .btn-order:hover {
+            background-color: #ff5252;
+        }
+    </style>
 </head>
 <body>
-<h1>Заказ пиццы: <span th:text="${pizza.pizzaName}"/></h1>
+<div class="container py-5">
+    <div class="order-card">
+        <!-- Карточка пиццы -->
+        <div class="text-center">
+            <img th:if="${not #lists.isEmpty(pizza.images)}"
+                 th:src="@{'/images/' + ${pizza.images[0].id}}"
+                 class="pizza-image w-100 mb-3">
+        </div>
 
-<form th:action="@{/pizza/order/{id}(id=${pizza.id})}" method="post">
-    <label>Количество:</label>
-    <input type="number" name="quantity" min="1" value="1" required/><br/>
+        <div class="p-4">
+            <h2 class="text-center mb-4">Оформление заказа</h2>
+            <h4 class="text-center mb-4" th:text="${pizza.pizzaName}"></h4>
 
-    <label>Имя:</label>
-    <input type="text" name="customerName" required/><br/>
+            <form th:action="@{/pizza/order/{id}(id=${pizza.id})}" method="post">
+                <!-- Основная информация -->
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label class="form-label">Количество</label>
+                        <input type="number" class="form-control" name="quantity" min="1" value="1" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Цена за шт.</label>
+                        <input type="text" class="form-control" th:value="${pizza.price} + ' руб.'" readonly>
+                    </div>
+                </div>
 
-    <label>Телефон:</label>
-    <input type="text" name="phoneNumber" required/><br/>
+                <!-- Данные клиента -->
+                <div class="mb-3">
+                    <label class="form-label">Ваше имя</label>
+                    <input type="text" class="form-control" name="customerName" required>
+                </div>
 
-    <label>Адрес доставки:</label>
-    <input type="text" name="deliveryAddress" required/><br/>
+                <div class="mb-3">
+                    <label class="form-label">Контактный телефон</label>
+                    <input type="tel" class="form-control" name="phoneNumber"
+                           placeholder="+7 (XXX) XXX-XX-XX" required>
+                </div>
 
-    <button type="submit">Оформить заказ</button>
-</form>
+                <div class="mb-4">
+                    <label class="form-label">Адрес доставки</label>
+                    <input type="text" class="form-control" name="deliveryAddress"
+                           placeholder="Улица, дом, квартира" required>
+                </div>
 
-<a th:href="@{/pizza}">Назад к списку</a>
+                <!-- Промокод -->
+                <div class="mb-4">
+                    <label class="form-label">Промокод (если есть)</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="promoCode"
+                               placeholder="Введите промокод">
+                        <button class="btn btn-outline-secondary" type="button"
+                                onclick="alert('Промокод будет применен при оформлении')">
+                            Проверить
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Кнопка оформления -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-order btn-lg">
+                        Подтвердить заказ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,23 +1,16 @@
 package org.example.pizzamarket.controller;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.pizzamarket.dto.OrderItemDto;
-
-
+import org.example.pizzamarket.model.Order;
 import org.example.pizzamarket.model.Pizza;
-
 import org.example.pizzamarket.service.OrderService;
 import org.example.pizzamarket.service.PizzaService;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-
 import java.util.Map;
 
 @Controller
@@ -29,24 +22,21 @@ public class PizzaController {
     private final OrderService orderService;
 
     @GetMapping
-    public String listPizzas(@RequestParam(required = false) String title, Model model) {
-        List<Pizza> pizzas = pizzaService.listProducts(title);
-        model.addAttribute("pizzas", pizzas);
-        return "/list";
+    public String listPizzas( Model model) {
+        model.addAttribute("pizzas", pizzaService.listProducts());
+        return "list";
     }
 
     @GetMapping("/{id}")
     public String pizzaInfo(@PathVariable Long id, Model model) {
-        Pizza pizza = pizzaService.getProductById(id);
-        model.addAttribute("pizza", pizza);
-        return "/details";
+        model.addAttribute("pizza", pizzaService.getProductById(id));
+        return "details";
     }
 
     @GetMapping("/order/{id}")
     public String showOrderPage(@PathVariable Long id, Model model) {
-        Pizza pizza = pizzaService.getProductById(id);
-        model.addAttribute("pizza", pizza);
-        return "/order";
+        model.addAttribute("pizza", pizzaService.getProductById(id));
+        return "order";
     }
 
     @PostMapping("/order/{id}")
@@ -56,10 +46,11 @@ public class PizzaController {
             @RequestParam String customerName,
             @RequestParam String phoneNumber,
             @RequestParam String deliveryAddress,
-            Model model
-    ) {
-        Map<Long, Integer> pizzaIdToQuantity = Map.of(id, quantity);
-        var order = orderService.createOrder(customerName, phoneNumber, deliveryAddress, pizzaIdToQuantity);
+            @RequestParam(required = false) String promoCode,
+            Model model) {
+
+        Map<Long, Integer> pizzaQuantities = Map.of(id, quantity);
+        Order order = orderService.createOrder(customerName, phoneNumber, deliveryAddress, pizzaQuantities, promoCode);
         model.addAttribute("order", order);
         return "orderSuccess";
     }
@@ -71,15 +62,9 @@ public class PizzaController {
     }
 
     @PostMapping("/add")
-    public String savePizza(
-            @ModelAttribute("pizza") Pizza pizza,
-            @RequestParam("file") MultipartFile file
-    ) {
-        try {
-            pizzaService.savePizza(pizza, file);
-            return "redirect:/pizza";
-        } catch (IOException e) {
-            return "errorPage";
-        }
+    public String savePizza(@ModelAttribute Pizza pizza, @RequestParam("file") MultipartFile file)
+            throws IOException {
+        pizzaService.savePizza(pizza, file);
+        return "redirect:/pizza";
     }
 }
