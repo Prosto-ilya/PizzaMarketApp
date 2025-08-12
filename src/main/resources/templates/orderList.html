@@ -29,12 +29,16 @@
             <td th:text="${order.totalPrice} + ' руб.'"></td>
             <td>
                 <a th:href="@{/order/{id}(id=${order.id})}" class="btn btn-sm btn-info">Детали</a>
+                <form th:action="@{/order/{id}/delete(id=${order.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Вы уверены, что хотите удалить этот заказ?')">
+                        Удалить
+                    </button>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <a th:href="@{/pizza}" class="btn btn-primary">Вернуться в меню</a>
 </div>
 </body>
 </html>

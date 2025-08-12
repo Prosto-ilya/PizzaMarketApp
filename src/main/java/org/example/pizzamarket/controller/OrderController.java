@@ -2,6 +2,7 @@ package org.example.pizzamarket.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.pizzamarket.model.Order;
 import org.example.pizzamarket.service.OrderService;
 import org.example.pizzamarket.service.PizzaService;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,14 @@ public class OrderController {
     private final OrderService orderService;
     private final PizzaService pizzaService;
 
-    @GetMapping
+    // Существующий endpoint
+    @GetMapping("/orderList")
     public String showAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
         return "orderList";
     }
+
+
 
     @GetMapping("/create")
     public String showCreateOrderForm(Model model) {
@@ -54,13 +58,24 @@ public class OrderController {
             }
         }
 
-        orderService.createOrder(customerName, phoneNumber, deliveryAddress, pizzaQuantities, promoCode);
-        return "redirect:/order";
+        Order order = orderService.createOrder(customerName, phoneNumber, deliveryAddress, pizzaQuantities, promoCode);
+
+        return "redirect:/order/success/" + order.getId();
     }
 
     @GetMapping("/{id}")
     public String showOrderDetails(@PathVariable Long id, Model model) {
         model.addAttribute("order", orderService.getOrderById(id));
         return "orderDetails";
+    }
+    @PostMapping("/{id}/delete")
+    public String deleteOrder(@PathVariable Long id) {
+        orderService.deleteOrder(id);
+        return "redirect:/order/orderList";
+    }
+    @GetMapping("/success/{id}")
+    public String showSuccessPage(@PathVariable Long id, Model model) {
+        model.addAttribute("order", orderService.getOrderById(id));
+        return "orderSuccess";
     }
 }

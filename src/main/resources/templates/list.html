@@ -28,7 +28,7 @@
             <a class="navbar-brand" href="#">Pizza Market</a>
             <div class="navbar-nav">
                 <a class="nav-link" th:href="@{/pizza/add}">Добавить пиццу</a>
-                <a class="nav-link" th:href="@{/order}">Заказы</a>
+                <a class="nav-link" th:href="@{/order/orderList}">Заказы</a>
                 <a class="nav-link" th:href="@{/order/create}">Новый заказ</a>
             </div>
         </div>
@@ -36,12 +36,7 @@
 
     <h1 class="mb-4">Список пицц</h1>
 
-    <form class="mb-4">
-        <div class="input-group">
-            <input type="text" class="form-control" name="title" placeholder="Поиск по названию" th:value="${param.title}">
-            <button class="btn btn-primary" type="submit">Найти</button>
-        </div>
-    </form>
+
 
     <div class="row">
         <div th:each="pizza : ${pizzas}" class="col-md-4 mb-4">
