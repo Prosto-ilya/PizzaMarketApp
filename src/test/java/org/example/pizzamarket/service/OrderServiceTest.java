@@ -35,21 +35,21 @@ class OrderServiceTest {
 
     @Test
     void createOrder_NoPromoCode_Success() {
-        // Подготовка данных
+
         Pizza pizza = new Pizza();
         pizza.setId(1L);
         pizza.setPrice(BigDecimal.valueOf(10));
 
         Map<Long, Integer> quantities = Map.of(1L, 2); // 2 пиццы
 
-        // Настройка моков
+
         when(pizzaRepository.findById(1L)).thenReturn(Optional.of(pizza));
         when(orderRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        // Вызов метода
+
         Order order = orderService.createOrder("Иван", "123", "ул. Тест", quantities, null);
 
-        // Проверки
+
         assertEquals("Иван", order.getCustomerName());
         assertEquals(BigDecimal.valueOf(20), order.getTotalPrice()); // 2 x 10
         assertNull(order.getPromoCode());

@@ -29,7 +29,7 @@ class PizzaServiceTest {
     @Test
     void listProducts_ReturnsAllPizzas() {
 
-        // Подготовка тестовых данных
+
         Pizza pizza1 = new Pizza();
         pizza1.setPizzaName("Margherita");
         Pizza pizza2 = new Pizza();
@@ -52,7 +52,7 @@ class PizzaServiceTest {
 
     @Test
     void savePizza_WithoutImage_SavesSuccessfully() throws IOException {
-        // Подготовка тестовых данных
+
         Pizza pizza = new Pizza();
         pizza.setPizzaName("Test Pizza");
 

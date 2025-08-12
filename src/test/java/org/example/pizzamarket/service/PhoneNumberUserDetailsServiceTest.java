@@ -28,7 +28,7 @@ class PhoneNumberUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername_ExistingUser_ReturnsUserDetails() {
-        // Подготовка тестовых данных
+
         User testUser = new User();
         testUser.setPhoneNumber("+123456789");
         testUser.setPassword("encodedPassword");

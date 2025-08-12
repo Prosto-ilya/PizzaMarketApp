@@ -16,7 +16,7 @@ public class DataInitializer {
     @PostConstruct
     public void init() {
         try {
-            String adminPhone = "+79990000000";
+            String adminPhone = "+375000000000";
             if (!userRepository.existsByPhoneNumber(adminPhone)) {
                 User admin = new User();
                 admin.setPhoneNumber(adminPhone);
