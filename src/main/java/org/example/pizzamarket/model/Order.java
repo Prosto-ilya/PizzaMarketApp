@@ -1,5 +1,6 @@
 package org.example.pizzamarket.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Table(name = "orders")
 @Data
 @NoArgsConstructor
+@Schema(description = "Сущность заказа")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

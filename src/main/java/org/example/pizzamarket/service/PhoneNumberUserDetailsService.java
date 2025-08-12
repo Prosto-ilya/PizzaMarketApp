@@ -1,5 +1,7 @@
 package org.example.pizzamarket.service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.pizzamarket.model.User;
 import org.example.pizzamarket.repository.UserRepository;
@@ -10,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Tag(name = "User Details Service", description = "Сервис аутентификации по номеру телефона")
 public class PhoneNumberUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
+
+    @Operation(summary = "Загрузить пользователя по номеру телефона")
     @Override
     public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
         User user = userRepository.findByPhoneNumber(phoneNumber)

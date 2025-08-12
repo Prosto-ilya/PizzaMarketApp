@@ -1,5 +1,7 @@
 package org.example.pizzamarket.service;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.pizzamarket.model.Order;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Tag(name = "Order Service", description = "Сервис для работы с заказами")
 public class OrderService {
     private final OrderRepository orderRepository;
     private final PizzaRepository pizzaRepository;
@@ -25,20 +28,22 @@ public class OrderService {
 
 
     @Transactional
+    @Operation(summary = "Создать новый заказ",
+            description = "Создает заказ с указанными данными клиента и списком пицц")
     public Order createOrder(String customerName,
                              String phoneNumber,
                              String deliveryAddress,
                              Map<Long, Integer> pizzaQuantities,
                              String promoCode) {
 
-        // 1. Создаем заказ
+        //  Создаем заказ
         Order order = new Order();
         order.setCustomerName(customerName);
         order.setPhoneNumber(phoneNumber);
         order.setDeliveryAddress(deliveryAddress);
         order.setOrderTime(LocalDateTime.now());
 
-        // 2. Добавляем пиццы
+        //  Добавляем в эотот заказ пиццы
         BigDecimal total = BigDecimal.ZERO;
         for (Map.Entry<Long, Integer> entry : pizzaQuantities.entrySet()) {
             if (entry.getValue() <= 0) continue;
@@ -46,18 +51,18 @@ public class OrderService {
             Pizza pizza = pizzaRepository.findById(entry.getKey())
                     .orElseThrow(() -> new IllegalArgumentException("Пицца не найдена"));
 
-            // 3. Создаем позицию заказа (обязательно устанавливаем цену!)
+            //  Создаем позицию заказа с обязательно указанной ценой, иначе будеь error
             OrderItem item = new OrderItem();
             item.setPizza(pizza);
             item.setQuantity(entry.getValue());
-            item.setPrice(pizza.getPrice()); // <- Вот ключевая строка!
+            item.setPrice(pizza.getPrice());
             item.setOrder(order);
 
             order.getItems().add(item);
             total = total.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
         }
 
-        // 4. Применяем промокод
+        //  Просмотр и применение промокода
         if (promoCode != null && !promoCode.isEmpty()) {
             Optional<PromoCode> promo = promoCodeService.findByCode(promoCode);
             if (promo.isPresent() && promo.get().isValid()) {
@@ -80,17 +85,22 @@ public class OrderService {
     }
 
 
-
+    @Operation(summary = "Получить заказ по ID",
+            description = "Возвращает заказ с указанным идентификатором")
     @Transactional
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Заказ не найден"));
     }
 
+    @Operation(summary = "Получить все заказы",
+            description = "Возвращает список всех заказов")
     @Transactional
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
+    @Operation(summary = "Удалить заказ",
+            description = "Удаляет заказ с указанным идентификатором")
     @Transactional
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);

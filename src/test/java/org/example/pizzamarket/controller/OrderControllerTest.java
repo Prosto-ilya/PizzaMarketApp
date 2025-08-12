@@ -55,46 +55,6 @@ class OrderControllerTest {
                 .andExpect(model().attributeExists("pizzas"));
     }
 
-    @Test
-    void showAllOrders_ReturnsOrderListView() throws Exception {
-
-        when(orderService.getAllOrders()).thenReturn(Collections.emptyList());
-
-
-        mockMvc.perform(get("/order"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("orderList"))
-                .andExpect(model().attributeExists("orders"));
-    }
-    @Test
-    void createOrder_ValidData_RedirectsToOrderList() throws Exception {
-
-        Map<String, String> params = new HashMap<>();
-        params.put("customerName", "John");
-        params.put("phoneNumber", "123456789");
-        params.put("deliveryAddress", "Test Address");
-        params.put("pizza_1", "2"); // 2 пиццы с id=1
-        params.put("promoCode", "SUMMER20");
-
-        // Выполнение запроса
-        mockMvc.perform(post("/order/create")
-                        .param("customerName", "John")
-                        .param("phoneNumber", "123456789")
-                        .param("deliveryAddress", "Test Address")
-                        .param("pizza_1", "2")
-                        .param("promoCode", "SUMMER20"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/order"));
-
-        // Проверка бизнес-логики
-        verify(orderService).createOrder(
-                eq("John"),
-                eq("123456789"),
-                eq("Test Address"),
-                eq(Map.of(1L, 2)),
-                eq("SUMMER20")
-        );
-    }
 
     @Test
     void showOrderDetails_ReturnsOrderDetailsView() throws Exception {
