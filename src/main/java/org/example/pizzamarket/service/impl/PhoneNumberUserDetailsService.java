@@ -1,4 +1,4 @@
-package org.example.pizzamarket.service;
+package org.example.pizzamarket.service.impl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

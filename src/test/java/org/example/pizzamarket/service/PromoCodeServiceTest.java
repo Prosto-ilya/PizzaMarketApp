@@ -2,6 +2,7 @@ package org.example.pizzamarket.service;
 
 import org.example.pizzamarket.model.PromoCode;
 import org.example.pizzamarket.repository.PromoCodeRepository;
+import org.example.pizzamarket.service.PromoCodeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

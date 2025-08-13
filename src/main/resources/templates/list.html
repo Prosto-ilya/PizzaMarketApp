@@ -48,7 +48,7 @@
                     <h5 class="card-title" th:text="${pizza.pizzaName}"></h5>
                     <p class="card-text" th:text="${pizza.pizzaDescription}"></p>
                     <p class="card-text">
-                        <strong>Цена:</strong> <span th:text="${pizza.price} + ' ₽'"></span>
+                        <strong>Цена:</strong> <span th:text="${pizza.price} + ' BYN'"></span>
                     </p>
                     <p class="card-text">
                         <span th:class="${pizza.available} ? 'available' : 'unavailable'">

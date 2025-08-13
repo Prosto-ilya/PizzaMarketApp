@@ -34,8 +34,8 @@
         <tr th:each="item : ${order.items}">
             <td th:text="${item.pizza.pizzaName}"></td>
             <td th:text="${item.quantity}"></td>
-            <td th:text="${item.price} + ' руб.'"></td>
-            <td th:text="${item.price * item.quantity} + ' руб.'"></td>
+            <td th:text="${item.item_price} + ' руб.'"></td>
+            <td th:text="${item.item_price * item.quantity} + ' руб.'"></td>
         </tr>
         </tbody>
     </table>

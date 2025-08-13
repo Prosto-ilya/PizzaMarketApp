@@ -3,6 +3,7 @@ package org.example.pizzamarket.service;
 import org.example.pizzamarket.model.Image;
 import org.example.pizzamarket.model.Pizza;
 import org.example.pizzamarket.repository.PizzaRepository;
+import org.example.pizzamarket.service.PizzaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

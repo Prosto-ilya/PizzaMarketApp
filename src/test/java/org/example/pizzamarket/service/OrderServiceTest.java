@@ -2,9 +2,9 @@ package org.example.pizzamarket.service;
 
 import org.example.pizzamarket.model.Order;
 import org.example.pizzamarket.model.Pizza;
-import org.example.pizzamarket.model.PromoCode;
 import org.example.pizzamarket.repository.OrderRepository;
 import org.example.pizzamarket.repository.PizzaRepository;
+import org.example.pizzamarket.service.PromoCodeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;

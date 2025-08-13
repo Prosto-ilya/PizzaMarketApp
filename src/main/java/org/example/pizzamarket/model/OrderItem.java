@@ -30,7 +30,7 @@ public class OrderItem {
 
     @Column(name = "item_price", nullable = false, precision = 10, scale = 2)
     @Schema(description = "Цена за единицу", example = "550.00")
-    private BigDecimal price;
+    private BigDecimal item_price;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
@@ -39,7 +39,7 @@ public class OrderItem {
 
     @Schema(description = "Общая стоимость позиции", example = "1100.00")
     public BigDecimal getTotalPrice() {
-        return price.multiply(BigDecimal.valueOf(quantity));
+        return item_price.multiply(BigDecimal.valueOf(quantity));
     }
 }
 

@@ -1,7 +1,7 @@
 package org.example.pizzamarket.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.pizzamarket.service.PhoneNumberUserDetailsService;
+import org.example.pizzamarket.service.impl.PhoneNumberUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

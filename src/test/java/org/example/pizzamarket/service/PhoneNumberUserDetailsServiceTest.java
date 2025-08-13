@@ -4,6 +4,7 @@ package org.example.pizzamarket.service;
 
 import org.example.pizzamarket.model.User;
 import org.example.pizzamarket.repository.UserRepository;
+import org.example.pizzamarket.service.impl.PhoneNumberUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
