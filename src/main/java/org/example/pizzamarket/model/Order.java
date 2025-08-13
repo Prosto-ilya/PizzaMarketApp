@@ -31,14 +31,7 @@ public class Order {
     @ManyToOne
     private PromoCode promoCode;
 
-    // Метод для добавления позиции
-    public void addItem(OrderItem item) {
-        if (item == null) return;
 
-        item.setOrder(this);
-        items.add(item);
-        totalPrice = totalPrice.add(item.getTotalPrice());
-    }
 }
 
 

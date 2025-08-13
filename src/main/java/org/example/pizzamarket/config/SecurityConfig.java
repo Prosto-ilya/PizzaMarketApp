@@ -58,7 +58,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // hook your PhoneNumberUserDetailsService + encoder into the AuthenticationManager
+
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder auth =
