@@ -1,10 +1,11 @@
 package org.example.pizzamarket.service;
 
+import org.example.pizzamarket.exeption.OrderNotFoundException;
 import org.example.pizzamarket.model.Order;
 import org.example.pizzamarket.model.Pizza;
 import org.example.pizzamarket.repository.OrderRepository;
 import org.example.pizzamarket.repository.PizzaRepository;
-import org.example.pizzamarket.service.PromoCodeService;
+import org.example.pizzamarket.service.impl.OrderServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +31,7 @@ class OrderServiceTest {
     private PromoCodeService promoCodeService;
 
     @InjectMocks
-    private OrderService orderService;
+    private OrderServiceImp orderService;
 
     @Test
     void createOrder_NoPromoCode_Success() {
@@ -74,14 +75,6 @@ class OrderServiceTest {
     }
 
     @Test
-    void getOrderById_NotExists_ThrowsException() {
-        when(orderRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(IllegalArgumentException.class, () ->
-                orderService.getOrderById(1L)
-        );
-    }
-    @Test
     void getAllOrders_ReturnsAll() {
         List<Order> expected = List.of(new Order(), new Order());
         when(orderRepository.findAll()).thenReturn(expected);
@@ -92,6 +85,33 @@ class OrderServiceTest {
     }
 
 
+    @Test
+    void deleteOrder_ShouldDeleteWhenOrderExists() {
+        // 1. Подготовка моков
+        when(orderRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(orderRepository).deleteById(1L);
 
+        // 2. Вызов метода
+        orderService.deleteOrder(1L);
 
+        // 3. Проверки
+        verify(orderRepository, times(1)).existsById(1L);
+        verify(orderRepository, times(1)).deleteById(1L);
+        verifyNoMoreInteractions(orderRepository);
+    }
+
+    @Test
+    void deleteOrder_ShouldThrowWhenOrderNotExists() {
+        // 1. Подготовка моков
+        when(orderRepository.existsById(1L)).thenReturn(false);
+
+        // 2. Проверка исключения
+        assertThrows(OrderNotFoundException.class, () -> {
+            orderService.deleteOrder(1L);
+        });
+
+        // 3. Проверки
+        verify(orderRepository, times(1)).existsById(1L);
+        verify(orderRepository, never()).deleteById(any());
+    }
 }

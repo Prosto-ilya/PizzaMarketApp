@@ -67,7 +67,41 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("orderDetails"))
                 .andExpect(model().attributeExists("order"));
-
-
     }
+
+
+    @Test
+    void createOrder_ShouldRedirectToSuccessPage() throws Exception {
+        Order order = new Order();
+        order.setId(1L);
+        when(orderService.createOrder(any(), any(), any(), any(), any())).thenReturn(order);
+
+        mockMvc.perform(post("/order/create")
+                        .param("customerName", "Test")
+                        .param("phoneNumber", "123")
+                        .param("deliveryAddress", "Address")
+                        .param("pizza_1", "2"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/success/1"));
+    }
+
+    @Test
+    void deleteOrder_ShouldRedirectToOrderList() throws Exception {
+        doNothing().when(orderService).deleteOrder(1L);
+
+        mockMvc.perform(post("/order/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/orderList"));
+    }
+
+    @Test
+    void showSuccessPage_ShouldReturnSuccessView() throws Exception {
+        when(orderService.getOrderById(1L)).thenReturn(new Order());
+
+        mockMvc.perform(get("/order/success/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("orderSuccess"))
+                .andExpect(model().attributeExists("order"));
+    }
+
 }

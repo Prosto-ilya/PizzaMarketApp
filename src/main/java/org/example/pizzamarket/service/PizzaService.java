@@ -11,5 +11,4 @@ public interface PizzaService {
     List<Pizza> listProducts();
     Pizza getProductById(Long id);
     void savePizza(Pizza pizza, MultipartFile file) throws IOException;
-
 }

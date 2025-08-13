@@ -2,13 +2,12 @@ package org.example.pizzamarket.service;
 
 import org.example.pizzamarket.model.PromoCode;
 import org.example.pizzamarket.repository.PromoCodeRepository;
-import org.example.pizzamarket.service.PromoCodeService;
+import org.example.pizzamarket.service.impl.PromoCodeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 
 
@@ -22,7 +21,7 @@ class PromoCodeServiceTest {
     private PromoCodeRepository promoCodeRepository;
 
     @InjectMocks
-    private PromoCodeService promoCodeService;
+    private PromoCodeServiceImpl promoCodeService;
 
     @Test
     void getAllPromoCodes_ReturnsAllPromoCodes() {

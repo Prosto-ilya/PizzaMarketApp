@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.pizzamarket.exeption.PizzaNotFoundException;
 import org.example.pizzamarket.model.Image;
 import org.example.pizzamarket.model.Pizza;
 import org.example.pizzamarket.repository.PizzaRepository;
@@ -15,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Tag(name = "Pizza Service", description = "Сервис для работы с пиццами")
@@ -25,6 +27,7 @@ public class PizzaServiceImp implements PizzaService {
     private final PizzaRepository pizzaRepository;
     @Operation(summary = "Получить список всех пицц",
             description = "Возвращает список всех доступных пицц")
+
     @Transactional
     public List<Pizza> listProducts() {
         return pizzaRepository.findAll();
@@ -51,7 +54,10 @@ public class PizzaServiceImp implements PizzaService {
     @Operation(summary = "Получить пиццу по ID",
               description = "Возвращает пиццу с указанным идентификатором")
     public Pizza getProductById(Long id) {
-        return pizzaRepository.findById(id).orElseThrow();
+        return pizzaRepository.findById(id).orElseThrow(() -> {
+            log.warn("Pizza not found with id: {}", id);
+            return new PizzaNotFoundException(id);
+        });
     }
 
 }

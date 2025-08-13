@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.pizzamarket.exeption.OrderNotFoundException;
 import org.example.pizzamarket.model.Order;
 import org.example.pizzamarket.model.OrderItem;
 import org.example.pizzamarket.model.Pizza;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Tag(name = "Order Service", description = "Сервис для работы с заказами")
@@ -92,7 +95,10 @@ public class OrderServiceImp implements OrderService {
     @Transactional
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Заказ не найден"));
+                .orElseThrow(() -> {
+                    log.warn("Order not found with id: {}", id);
+                    return new OrderNotFoundException(id);
+                });
     }
 
     @Operation(summary = "Получить все заказы",
@@ -105,6 +111,9 @@ public class OrderServiceImp implements OrderService {
             description = "Удаляет заказ с указанным идентификатором")
     @Transactional
     public void deleteOrder(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new OrderNotFoundException(id);
+        }
         orderRepository.deleteById(id);
     }
 }

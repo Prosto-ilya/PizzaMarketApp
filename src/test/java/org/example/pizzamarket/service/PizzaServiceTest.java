@@ -1,9 +1,10 @@
 package org.example.pizzamarket.service;
 
+import org.example.pizzamarket.exeption.PizzaNotFoundException;
 import org.example.pizzamarket.model.Image;
 import org.example.pizzamarket.model.Pizza;
 import org.example.pizzamarket.repository.PizzaRepository;
-import org.example.pizzamarket.service.PizzaService;
+import org.example.pizzamarket.service.impl.PizzaServiceImp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +28,7 @@ class PizzaServiceTest {
     private PizzaRepository pizzaRepository;
 
     @InjectMocks
-    private PizzaService pizzaService;
+    private PizzaServiceImp pizzaService;
     @Test
     void listProducts_ReturnsAllPizzas() {
 
@@ -90,6 +92,24 @@ class PizzaServiceTest {
         assertEquals("image", image.getName());
         assertEquals("test.jpg", image.getOriginalFileName());
         assertEquals("image/jpeg", image.getContentType());
+    }
+    @Test
+    void getProductById_ShouldReturnPizzaWhenExists() {
+        Pizza expected = new Pizza();
+        when(pizzaRepository.findById(1L)).thenReturn(Optional.of(expected));
+
+        Pizza result = pizzaService.getProductById(1L);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getProductById_ShouldThrowWhenNotExists() {
+        when(pizzaRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThrows(PizzaNotFoundException.class, () -> {
+            pizzaService.getProductById(1L);
+        });
     }
 
 }
