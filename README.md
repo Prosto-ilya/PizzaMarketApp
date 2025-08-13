@@ -29,8 +29,6 @@ Customer Side:
 - Create promocode
 - User management
 
-# Tech Stack
-
 # Backend:
 - Spring Boot 
 - Spring Security
